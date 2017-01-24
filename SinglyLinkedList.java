@@ -11,21 +11,21 @@
  * (5) Test thoroughly in main() with a variety of data types.
  *
  * We affirm that all members of our team contributed to this solution.
- * @author <insert your team name here (e.g., red1, red2, ..., green1, ...)>
+ * @author <green6>
  * @author <insert the name of your Scribe here>
  */
 
-public class SinglyLinkedList implements List {
-
+public class  SinglyLinkedList <T> implements List<T> {
+  
   class Node {
-    int data;
+    T data;
     Node next;
     
-    Node(int data) {
+    Node(T data) {
       this(data, null);
     }
     
-    Node(int data, Node next) {
+    Node(T data, Node next) {
       this.data = data;
       this.next = next;
     }
@@ -34,7 +34,7 @@ public class SinglyLinkedList implements List {
   Node head;
   int n;
   
-  public void add(int x) {
+  public void add(T x) {
     n++;
     if (head == null) 
       head = new Node(x);
@@ -47,17 +47,17 @@ public class SinglyLinkedList implements List {
   }
   
   /*
-  * removes the node at a specified index
-  * @return returns the data at a specified node
-  * @parameter i index to be removed
-  */
-  public int remove(int i) {
+   * removes the node at a specified index
+   * @return returns the data at a specified node
+   * @parameter i index to be removed
+   */
+  public T remove(int i) {
     if (i < 0 || i >= n) {
       // i is outside of the avaliable index
-     throw new IndexOutOfBoundsException(); 
+      throw new IndexOutOfBoundsException(); 
     }
     Node p = head;
-    int ans;
+    T ans;
     if (i == 0) {
       // Since i == 0, we need to move the head down.
       ans = head.data;
@@ -79,7 +79,7 @@ public class SinglyLinkedList implements List {
     return ans;
   }
   
-  public int get(int i) {
+  public T get(int i) {
     if (i < 0 || i >= size())
       throw new IndexOutOfBoundsException();
     Node p = head;
@@ -89,14 +89,14 @@ public class SinglyLinkedList implements List {
     }
     return p.data;
   }
-
-  public boolean contains(int x) {
+  
+  public boolean contains(T x) {
     Node p = head;
     while (p != null)
       if (p.data == x)
-        return true;
-      else
-        p = p.next;
+      return true;
+    else
+      p = p.next;
     return false;
   }
   
@@ -109,28 +109,28 @@ public class SinglyLinkedList implements List {
   }
   
   /* Returns the list of nodes as a String
-  * @return the list of Nodes as a String
-  */
+   * @return the list of Nodes as a String
+   */
   
   public String toString() {
     if (head == null) {  
-     // head is null so return default value  
-     return "()";  
-   }
-   Node p = head;  
-   String ans = "(";  
-   while (p.next != null) {
-    // cycle through p adding the data from p into the string  
-    ans += p.data + " ";  
-    // increment p to the next pointer  
-    p = p.next;  
+      // head is null so return default value  
+      return "()";  
+    }
+    Node p = head;  
+    String ans = "(";  
+    while (p.next != null) {
+      // cycle through p adding the data from p into the string  
+      ans += p.data + " ";  
+      // increment p to the next pointer  
+      p = p.next;  
     }  
     ans += p.data + ")";
     return ans;
   }
   
-  public static void main(String... args) {
-    List xs = new SinglyLinkedList();
+  public static void main(String... args6) {
+    List<Integer> xs = new SinglyLinkedList<Integer>();
     assert "()".equals(xs.toString());
     int[] a = new int[] { 7, 4, 6, 9, 2 };
     for (int x : a)
@@ -146,15 +146,48 @@ public class SinglyLinkedList implements List {
     while (!xs.isEmpty())
       xs.remove(0);
     assert "()".equals(xs.toString());
-    System.out.println("it worked");
+    
+    
+    List<String> bs = new SinglyLinkedList<String>();
+    String[] b = new String[] {"7","4","6","9","2"};
+    for (String x : b)
+      bs.add(x);
+    assert "(7 4 6 9 2)".equals(bs.toString());
+    for (String x : b)
+      assert bs.contains(x);
+    for (int i = 0; i < bs.size(); i++)
+      assert b[i] == bs.get(i);
+    assert "(7 4 6 9 2)".equals(bs.toString());
+    bs.remove(3);
+    assert "(7 4 6 2)".equals(bs.toString());
+    while (!bs.isEmpty())
+      bs.remove(0);
+    assert "()".equals(bs.toString());
+    
+    List<Boolean> cs = new SinglyLinkedList<Boolean>();
+    boolean[] c = new boolean[] {true, true, false, true};
+    for (Boolean x: c) 
+      cs.add(x);
+    for (Boolean x: c) 
+      assert cs.contains(x);
+    for (int i = 0; i < cs.size(); i++) {
+      assert c[i] == cs.get(i);
+    }
+    assert "(true true false true)".equals(cs.toString());
+    cs.remove(2);
+    assert "(true true true)".equals(cs.toString());
+    while (!cs.isEmpty()) {
+      cs.remove(0);
+    }
+    assert cs.toString().equals("()");
   }
 }
 
-interface List {
-  void add(int x);
-  int remove(int i);
-  int get(int i);
-  boolean contains(int x);
+interface List<T> {
+  void add(T x);
+  T remove(int i);
+  T get(int i);
+  boolean contains(T x);
   int size();
   boolean isEmpty();
 }
